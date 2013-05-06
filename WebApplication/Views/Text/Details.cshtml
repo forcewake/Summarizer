@@ -1,0 +1,43 @@
+﻿@model WebApplication.Models.Text
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Text</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FullText)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullText)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ShortText)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ShortText)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Language.FullName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Language.FullName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DisplayLines)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DisplayLines)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.TextId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

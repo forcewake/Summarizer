@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextSummarizationLibrary", "TextSummarizationLibrary\TextSummarizationLibrary.csproj", "{163E65FD-A18C-4319-BA93-425818AA76A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{3C6AA533-F956-459B-A694-89411668B24B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{163E65FD-A18C-4319-BA93-425818AA76A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163E65FD-A18C-4319-BA93-425818AA76A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163E65FD-A18C-4319-BA93-425818AA76A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163E65FD-A18C-4319-BA93-425818AA76A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C6AA533-F956-459B-A694-89411668B24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C6AA533-F956-459B-A694-89411668B24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C6AA533-F956-459B-A694-89411668B24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C6AA533-F956-459B-A694-89411668B24B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
