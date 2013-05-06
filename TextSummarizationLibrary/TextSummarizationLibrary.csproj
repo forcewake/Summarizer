@@ -48,7 +48,7 @@
     <Compile Include="Stemmer.cs" />
     <Compile Include="SummarizedDocument.cs" />
     <Compile Include="Summarizer.cs" />
-    <Compile Include="SummarizerArguments.cs" />
+    <Compile Include="TextModel.cs" />
     <Compile Include="Word.cs" />
   </ItemGroup>
   <ItemGroup>
