@@ -1,0 +1,29 @@
+@model Web.Models.Text
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Text</legend>
+
+    <div class="display-label">FullText</div>
+    <div class="display-field">@Model.FullText</div>
+
+    <div class="display-label">ShortText</div>
+    <div class="display-field">@Model.ShortText</div>
+
+    <div class="display-label">Language</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.Language).ToString()</div>
+
+    <div class="display-label">DisplayLines</div>
+    <div class="display-field">@Model.DisplayLines</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.TextId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

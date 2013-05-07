@@ -1,0 +1,52 @@
+@model IEnumerable<Web.Models.Language>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>FullName
+        </th>
+        <th>ShortName
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Action
+                       
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @{
+                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.LanguageId })</li>
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.LanguageId })</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.LanguageId })</li>
+
+                        }
+                    </ul>
+                </div>
+            </td>
+            <td>
+                @item.FullName
+            </td>
+            <td>
+                @item.ShortName
+            </td>
+        </tr>
+    }
+
+</table>
+
+

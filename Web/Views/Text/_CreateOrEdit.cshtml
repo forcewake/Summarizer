@@ -1,0 +1,37 @@
+@model Web.Models.Text
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.FullText)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.FullText)
+    @Html.ValidationMessageFor(model => model.FullText)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.DisplayLines)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.DisplayLines)
+    @Html.ValidationMessageFor(model => model.DisplayLines)
+</div>
+
+<div class="help-block">@Html.ValueFor(model => model.ShortText)</div>
+
+
+<div class="editor-label">
+    Language
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>)ViewBag.PossibleLanguage).Select(option => new SelectListItem
+{
+    Text = Html.DisplayTextFor(_ => option.FullName).ToString(),
+    Value = option.LanguageId.ToString(),
+    Selected = (Model != null) && (option.LanguageId == Model.LanguageId)
+}), "Choose...")
+    @Html.ValidationMessageFor(model => model.LanguageId)
+</div>
