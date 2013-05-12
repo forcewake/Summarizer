@@ -1,45 +1,212 @@
-﻿<div id="body">
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>Welcome to ASP.NET Web API!</h1>
-                <h2>Modify the code in this template to jump-start your ASP.NET Web API development.</h2>
-            </hgroup>
-            <p>
-                ASP.NET Web API allows you to expose your applications, data and services to the
-                web directly over HTTP.
-            </p>
-            <p>
-                To learn more about ASP.NET Web API visit the
-                <a href="http://go.microsoft.com/fwlink/?LinkID=238195" title="ASP.NET Web API Website">ASP.NET Web API Website</a>.
-                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET Web API.
-                If you have any questions about ASP.NET Web API, visit
-                <a href="http://go.microsoft.com/fwlink/?LinkID=238196" title="ASP.NET Web API Forum">our forums</a>.
-            </p>
-        </div>
-    </section>
-    <section class="content-wrapper main-content clear-fix">
-        <h3>We suggest the following steps:</h3>
-        <ol class="round">
-            <li class="one">
-                <h5>Getting Started</h5>
-                ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-                a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-                is an ideal platform for building RESTful applications on the .NET Framework.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245160">Learn more…</a>
-            </li>
+﻿@using BootstrapSupport
+@model Web.Models.Text
 
-            <li class="two">
-                <h5>Add NuGet packages and jump-start your coding</h5>
-                NuGet makes it easy to install and update free libraries and tools.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245161">Learn more…</a>
-            </li>
-            <li class="three">
-                <h5>Find Web Hosting</h5>
-                You can easily find a web hosting company that offers the right mix of features
-                and price for your applications.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245164">Learn more…</a>
-            </li>
-        </ol>
-    </section>
+@{
+    ViewBag.Title = "Summarizer";
+    Layout = "~/Views/Shared/_BootstrapLayout.narrow.cshtml";
+}
+
+@using (Html.BeginForm("", "api/summarizer", FormMethod.Post, new { @class = "well span8", id = "summarizerForm" }))
+{
+    <div id="errors"></div>
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="span3">
+            <div class="control-group">
+                @Html.LabelFor(model => model.DisplayLines, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.DisplayLines)
+                    @Html.ValidationMessageFor(model => model.DisplayLines, null, new { @class = "help-inline" })
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.LanguageId, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>)ViewBag.PossibleLanguage).Select(option => new SelectListItem
+                {
+                    Text = Html.DisplayTextFor(_ => option.FullName).ToString(),
+                    Value = option.LanguageId.ToString(),
+                    Selected = (Model != null) && (option.LanguageId == Model.LanguageId)
+                }), "Choose language", new Dictionary<string, object>
+                    {
+                        {"class", "input-xlarge span3"}
+                    })
+                    @Html.ValidationMessageFor(model => model.LanguageId, null, new { @class = "help-inline" })
+                </div>
+            </div>
+        </div>
+        <div class="span5">
+            @Html.LabelFor(model => model.FullText, new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.FullText, new Dictionary<string, object>
+                {
+                    {"class", "input-xlarge span5"},
+                    {"rows", "15"}
+                })
+        </div>
+
+
+        <button type="submit" class="btn btn-primary pull-right" data-loading-text="Sending...">Send</button>
+    </div>
+}
+
+<div id="test" class="well-small span8">
+
+<div class="span8" id="jsonElem">
+    <h3>Json output</h3>
+    <div id="elem"></div>
 </div>
+
+<div class="span8" id="sentencesElem">
+    <h3>Sentences output</h3>
+    <ol id="sentences">
+        <li data-template>
+            <p>{{.}}</p>
+        </li>
+        <li data-template-fallback>Sorry, JavaScript required!</li>
+    </ol>
+    <h3>Keywords output</h3>
+    <ol id="keywords">
+        <li data-template>
+            <p>{{.}}</p>
+        </li>
+        <li data-template-fallback>Sorry, JavaScript required!</li>
+    </ol>
+</div>
+<div class="modal">
+    <!-- Place at bottom of page -->
+</div>
+    </div>
+@section Head
+{
+    <link href="~/Content/pretty-json.css" rel="stylesheet" />
+    <style>
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+        .modal {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+        }
+
+        /* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+        body.loading {
+            overflow: hidden;
+        }
+
+            /* Anytime the body has the loading class, our
+   modal element will be visible */
+            body.loading .modal {
+                display: block;
+            }
+    </style>
+}
+
+@section Scripts
+{
+
+    <script src="~/Scripts/underscore-min.js"></script>
+    <script src="~/Scripts/backbone-min.js"></script>
+    <script src="~/Scripts/pretty-json-min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="~/Scripts/json-to-table.js"></script>
+    <script src="~/Scripts/tempo.js" type="text/javascript"></script>
+    <script>
+
+        $("body").bind({
+            ajaxStart: function () {
+                $(this).addClass("loading");
+            },
+            ajaxStop: function () {
+                $(this).removeClass("loading");
+            }
+        });
+
+        // prepare the form when the DOM is ready 
+        $(document).ready(function () {
+
+            $('#jsonElem').hide();
+            $('#sentencesElem').hide();
+
+            var options = {
+                target: '#test',   // target element(s) to be updated with server response  
+                success: showResponse  // post-submit callback 
+
+            };
+
+            // bind form using 'ajaxForm' 
+            $('#summarizerForm').ajaxForm(options);
+        });
+
+        // post-submit callback 
+        function showResponse(responseText, statusText, xhr, $form) {
+
+            var node = new PrettyJSON.view.Node({
+                el: $('#elem'),
+                data: responseText
+            });
+
+            Tempo.prepare("sentences").render(responseText.selectedSentences);
+            Tempo.prepare("keywords").render(responseText.keywords);
+
+            $('#jsonElem').show();
+            $('#sentencesElem').show();
+
+        }
+
+
+        /*
+* Form Validation
+* This script will set Bootstrap error classes when form.submit is called.
+* The errors are produced by the MVC unobtrusive validation.
+*/
+        $(function () {
+            $('summarizerForm').submit(function () {
+                $(this).find('div.control-group').each(function () {
+                    if ($(this).find('span.field-validation-error').length == 0) {
+                        $(this).removeClass('error');
+                    }
+                });
+
+                if (!$(this).valid()) {
+                    $(this).find('div.control-group').each(function () {
+                        if ($(this).find('span.field-validation-error').length > 0) {
+                            $(this).addClass('error');
+                        }
+                    });
+                }
+            });
+            $('summarizerForm').each(function () {
+                $(this).find('div.control-group').each(function () {
+                    if ($(this).find('span.field-validation-error').length > 0) {
+                        $(this).addClass('error');
+                    }
+                });
+            });
+        });
+        var page = function () {
+            //Update that validator
+            $.validator.setDefaults({
+                highlight: function (element) {
+                    $(element).closest(".control-group").addClass("error");
+                },
+                unhighlight: function (element) {
+                    $(element).closest(".control-group").removeClass("error");
+                }
+            });
+        }();
+        /* End Form Validation */
+
+    </script>
+}

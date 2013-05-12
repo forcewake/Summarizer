@@ -11,7 +11,7 @@ namespace Web.Models
 
         [Required]
         [DataType(DataType.MultilineText)]
-        [Display(Name = "Texts")]
+        [Display(Name = "Text")]
         [MaxLength]
         public string FullText { get; set; }
 
@@ -20,11 +20,11 @@ namespace Web.Models
         [MaxLength]
         public string ShortText { get; set; }
 
+        [Display(Name = "Language")]
         public int LanguageId { get; set; }
         public virtual Language Language { get; set; }
 
-        [Required]
-        [Display(Name = "Display linest")]
+        [Display(Name = "Display lines")]
         public int DisplayLines { get; set; }
 
     }

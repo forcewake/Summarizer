@@ -14,11 +14,12 @@ namespace Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Formatters.Add(config.Formatters.JsonFormatter);
 
             // Раскомментируйте следующую строку кода, чтобы включить поддержку запросов для действий с типом возвращаемого значения IQueryable или IQueryable<T>.
             // Чтобы избежать обработки неожиданных или вредоносных запросов, используйте параметры проверки в QueryableAttribute, чтобы проверять входящие запросы.
             // Дополнительные сведения см. по адресу http://go.microsoft.com/fwlink/?LinkId=279712.
-            //config.EnableQuerySupport();
+            config.EnableQuerySupport();
 
             // Чтобы отключить трассировку в приложении, закомментируйте или удалите следующую строку кода
             // Дополнительные сведения см. по адресу: http://www.asp.net/web-api

@@ -9,49 +9,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="@Styles.Url("~/content/css")" rel="stylesheet"/>
     <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-      }
+        body {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
 
-      /* Custom container */
-      .container-narrow {
-        margin: 0 auto;
-        max-width: 700px;
-      }
-      .container-narrow > hr {
-        margin: 30px 0;
-      }
+        /* Custom container */
+        .container-narrow {
+            margin: 0 auto;
+            max-width: 900px;
+        }
 
-      /* Main marketing message and sign up button */
-      .jumbotron {
-        margin: 60px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 72px;
-        line-height: 1;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
+            .container-narrow > hr {
+                margin: 30px 0;
+            }
 
-      /* Supporting marketing content */
-      .marketing {
-        margin: 60px 0;
-      }
-      .marketing p + h4 {
-        margin-top: 28px;
-      }
+        /* Main marketing message and sign up button */
+        .jumbotron {
+            margin: 60px 0;
+            text-align: center;
+        }
 
-      /* added to trim our long nav menu to a more appropriate appearance */
-      .masthead .nav {
-          max-width: 416px;
-          height: 3em;
-      }
+            .jumbotron h1 {
+                font-size: 72px;
+                line-height: 1;
+            }
+
+            .jumbotron .btn {
+                font-size: 21px;
+                padding: 14px 24px;
+            }
+
+        /* Supporting marketing content */
+        .marketing {
+            margin: 60px 0;
+        }
+
+            .marketing p + h4 {
+                margin-top: 28px;
+            }
+
+        /* added to trim our long nav menu to a more appropriate appearance */
+        .masthead .nav {
+            max-width: 416px;
+            height: 3em;
+        }
     </style>
-    <link href="@Styles.Url("~/Content/css-responsive")" rel="stylesheet" type="text/css" />
+    <link href="@Styles.Url("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
     @RenderSection("head", required: false)
     @Html.Partial("_html5shiv")
     @* favicons and touch icons go here *@
@@ -62,18 +66,25 @@
         <div class="masthead">
             <ul class="nav nav-pills pull-right">
                 @Html.Navigation()
+                <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
             </ul>
-            <h3 class="muted">MvcApplication1</h3>
+            <h3 class="muted">Summarizer</h3>
         </div>
 
         @Html.Partial("_alerts")
         @RenderBody()
         <hr>
-        <footer>
-            <p>&copy; Company @System.DateTime.Now.ToString("yyyy")</p>
-        </footer>
 
-    </div> <!-- container -->
+        <div class="row-fluid">
+            <div class="span6">
+                <footer>
+                    <p>&copy; Pavel Nasovich @DateTime.Now.ToString("yyyy")</p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+    <!-- container -->
     @Scripts.Render("~/js")
     @RenderSection("Scripts", required: false)
 </body>
