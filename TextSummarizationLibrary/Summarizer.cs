@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Security.Permissions;
+﻿using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
 {
@@ -18,8 +16,5 @@ namespace TextSummarizationLibrary
                                 .SelectNumberOfSentences(text.DisplayLines)
                                 .CreateSummarizedDocument();
         }
-
-
-
     }
 }

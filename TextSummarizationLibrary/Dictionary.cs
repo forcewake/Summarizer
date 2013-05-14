@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Security.Permissions;
-using System.Xml;
 using System.Xml.Linq;
+using TextSummarizationLibrary.Models;
+using TextSummarizationLibrary.Properties;
 
 namespace TextSummarizationLibrary
 {
@@ -39,12 +37,12 @@ namespace TextSummarizationLibrary
             {
                 case "ru":
                     {
-                        doc = XElement.Parse(Properties.Resources.ru);
+                        doc = XElement.Parse(Resources.ru);
                         break;
                     }
                 case "en":
                     {
-                        doc = XElement.Parse(Properties.Resources.en);
+                        doc = XElement.Parse(Resources.en);
                         break;
                     }
                 default:
@@ -64,7 +62,7 @@ namespace TextSummarizationLibrary
 
             dict.UnimportantWords = new List<Word>();
             List<string> unimpwords = LoadValueOnlySection(doc, "grader-tc");
-            foreach (var unimpword in unimpwords)
+            foreach (string unimpword in unimpwords)
             {
                 dict.UnimportantWords.Add(new Word(unimpword));
             }
@@ -73,26 +71,38 @@ namespace TextSummarizationLibrary
 
         private static List<string> LoadValueOnlySection(XElement doc, string section)
         {
-            IEnumerable<XElement> step1pre = doc.Elements(section);
-            return step1pre.Elements().Select(x => x.Value).ToList();
+            IEnumerable<XElement> step1Pre = doc.Elements(section);
+            List<string> loadValueOnlySection = step1Pre
+                .Elements()
+                .Select(x => x.Value)
+                .ToList();
+            return loadValueOnlySection;
         }
 
         private static List<string> LoadValueOnlyRule(XElement doc, string section, string container)
         {
-            IEnumerable<XElement> step1pre = doc.Elements(section).Elements(container);
-            return step1pre.Elements().Select(x => x.Value).ToList();
+            IEnumerable<XElement> step1Pre = doc
+                .Elements(section)
+                .Elements(container);
+            List<string> loadValueOnlyRule = step1Pre
+                .Elements()
+                .Select(x => x.Value)
+                .ToList();
+            return loadValueOnlyRule;
         }
 
         private static Dictionary<string, string> LoadKeyValueRule(XElement doc, string section, string container)
         {
             var dictionary = new Dictionary<string, string>();
-            IEnumerable<XElement> step1pre = doc.Elements(section).Elements(container);
-            foreach (XElement x in step1pre.Elements())
+            IEnumerable<XElement> step1Pre = doc
+                .Elements(section)
+                .Elements(container);
+            foreach (var keyvalue in step1Pre.Elements()
+                                             .Select(x => x.Value)
+                                             .Select(rule => rule.Split('|'))
+                                             .Where(keyvalue => !dictionary.ContainsKey(keyvalue[0])))
             {
-                string rule = x.Value;
-                string[] keyvalue = rule.Split('|');
-                if (!dictionary.ContainsKey(keyvalue[0]))
-                    dictionary.Add(keyvalue[0], keyvalue[1]);
+                dictionary.Add(keyvalue[0], keyvalue[1]);
             }
             return dictionary;
         }

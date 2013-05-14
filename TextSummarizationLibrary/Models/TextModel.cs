@@ -1,4 +1,4 @@
-﻿namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Models
 {
     public class TextModel
     {

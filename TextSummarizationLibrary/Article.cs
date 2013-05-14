@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
 {
@@ -68,14 +69,17 @@ namespace TextSummarizationLibrary
         private bool IsSentenceBreak(string word)
         {
             if (word.Contains("\r") || word.Contains("\n")) return true;
-            bool shouldBreak = (Rules.LinebreakRules.Any(p => word.EndsWith(p, StringComparison.CurrentCultureIgnoreCase)));
+            bool shouldBreak =
+                (Rules.LinebreakRules.Any(p => word.EndsWith(p, StringComparison.CurrentCultureIgnoreCase)));
 
 
-            if (shouldBreak == false) return shouldBreak;
+            if (shouldBreak == false)
+            {
+                return false;
+            }
 
-            shouldBreak = (!Rules.NotALinebreakRules.Any(p => word.StartsWith(p, StringComparison.CurrentCultureIgnoreCase)));
-
-
+            shouldBreak =
+                (!Rules.NotALinebreakRules.Any(p => word.StartsWith(p, StringComparison.CurrentCultureIgnoreCase)));
             return shouldBreak;
         }
 
@@ -108,6 +112,5 @@ namespace TextSummarizationLibrary
             }
             return sumDoc;
         }
-
     }
 }

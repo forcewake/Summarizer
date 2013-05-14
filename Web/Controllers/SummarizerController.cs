@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TextSummarizationLibrary;
+using TextSummarizationLibrary.Models;
 using Web.Models;
 
 namespace Web.Controllers

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
 {
@@ -13,7 +14,7 @@ namespace TextSummarizationLibrary
             newword.Stem = StemStrip(word, rules);
             return newword;
         }
-        
+
         internal static string StemStrip(string word, Dictionary rules)
         {
             string originalWord = word;

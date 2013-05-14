@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
 {
@@ -21,8 +22,11 @@ namespace TextSummarizationLibrary
             Article.ImportantWords = new List<Word>(wordsArray);
 
             foreach (Word foundWord in Article.Rules.UnimportantWords
-                .Select(word => Article.ImportantWords.Find(match => match.Value.ToLower() == word.Value.ToLower()))
-                .Where(foundWord => foundWord != null))
+                                              .Select(
+                                                  word =>
+                                                  Article.ImportantWords.Find(
+                                                      match => match.Value.ToLower() == word.Value.ToLower()))
+                                              .Where(foundWord => foundWord != null))
             {
                 Article.ImportantWords.Remove(foundWord);
             }
@@ -33,8 +37,11 @@ namespace TextSummarizationLibrary
         internal Grader GradeSentences()
         {
             foreach (Sentence sentence in from sentence in Article.Sentences
-                                          from importantWord in sentence.Words.Select(word => Stemmer.StemStrip(word.Value, Article.Rules))
-                                                      .Select(wordstem => Article.ImportantWords.Find(match => match.Stem == wordstem))
+                                          from importantWord in
+                                              sentence.Words.Select(word => Stemmer.StemStrip(word.Value, Article.Rules))
+                                                      .Select(
+                                                          wordstem =>
+                                                          Article.ImportantWords.Find(match => match.Stem == wordstem))
                                                       .Where(importantWord => importantWord != null)
                                           select sentence)
             {
@@ -51,9 +58,9 @@ namespace TextSummarizationLibrary
             {
                 double baseFreq = Article.ImportantWords[WordsCount].TermFrequency;
                 Article.Concepts = Article.ImportantWords
-                    .Where(p => p.TermFrequency >= baseFreq)
-                    .Select(p => p.Value)
-                    .ToList();
+                                          .Where(p => p.TermFrequency >= baseFreq)
+                                          .Select(p => p.Value)
+                                          .ToList();
             }
             else
             {
@@ -72,8 +79,11 @@ namespace TextSummarizationLibrary
 
             //grade first sentence of new paragraphs (denoted by two \n in a row) higher
             foreach (Sentence sentence in Article.Sentences
-                .Where(sentence => sentence.Words.Count >= 2)
-                .Where(sentence => sentence.Words[0].Value.Contains('\n') && sentence.Words[1].Value.Contains('\n')))
+                                                 .Where(sentence => sentence.Words.Count >= 2)
+                                                 .Where(
+                                                     sentence =>
+                                                     sentence.Words[0].Value.Contains('\n') &&
+                                                     sentence.Words[1].Value.Contains('\n')))
             {
                 sentence.Score *= 1.3;
             }

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Models
 {
     internal class Word
     {
@@ -19,9 +19,13 @@ namespace TextSummarizationLibrary
 
         public override bool Equals(object obj)
         {
-            if (GetType() != obj.GetType()) return false;
+            if (GetType() != obj.GetType())
+            {
+                return false;
+            }
             var arg = (Word) obj;
-            return Value.Equals(arg.Value, StringComparison.CurrentCultureIgnoreCase);
+            bool equals = Value.Equals(arg.Value, StringComparison.CurrentCultureIgnoreCase);
+            return equals;
         }
 
         public override int GetHashCode()

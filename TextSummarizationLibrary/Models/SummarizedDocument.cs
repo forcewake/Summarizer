@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Models
 {
     public class SummarizedDocument
     {

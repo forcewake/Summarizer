@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_BootstrapLayout.narrow.cshtml";
 }
 
-@using (Html.BeginForm("", "api/summarizer", FormMethod.Post, new { @class = "well span8", id = "summarizerForm" }))
+@using (Html.BeginForm("", "api/summarizer", FormMethod.Post, new {@class = "well span8", id = "summarizerForm"}))
 {
     <div id="errors"></div>
     @Html.ValidationSummary(true)
@@ -14,16 +14,16 @@
     <div class="row">
         <div class="span3">
             <div class="control-group">
-                @Html.LabelFor(model => model.DisplayLines, new { @class = "control-label" })
+                @Html.LabelFor(model => model.DisplayLines, new {@class = "control-label"})
                 <div class="controls">
                     @Html.EditorFor(model => model.DisplayLines)
-                    @Html.ValidationMessageFor(model => model.DisplayLines, null, new { @class = "help-inline" })
+                    @Html.ValidationMessageFor(model => model.DisplayLines, null, new {@class = "help-inline"})
                 </div>
             </div>
             <div class="control-group">
-                @Html.LabelFor(model => model.LanguageId, new { @class = "control-label" })
+                @Html.LabelFor(model => model.LanguageId, new {@class = "control-label"})
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>)ViewBag.PossibleLanguage).Select(option => new SelectListItem
+                    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>) ViewBag.PossibleLanguage).Select(option => new SelectListItem
                         {
                             Text = Html.DisplayTextFor(_ => option.FullName).ToString(),
                             Value = option.LanguageId.ToString(),
@@ -32,7 +32,7 @@
                             {
                                 {"class", "input-xlarge span3"}
                             })
-                    @Html.ValidationMessageFor(model => model.LanguageId, null, new { @class = "help-inline" })
+                    @Html.ValidationMessageFor(model => model.LanguageId, null, new {@class = "help-inline"})
                 </div>
             </div>
             <div class="control-group">
@@ -42,12 +42,17 @@
             </div>
         </div>
         <div class="span5">
-            @Html.LabelFor(model => model.FullText, new { @class = "control-label" })
-            @Html.TextAreaFor(model => model.FullText, new Dictionary<string, object>
-                {
-                    {"class", "input-xlarge span5"},
-                    {"rows", "15"}
-                })
+            <div class="control-group">
+                @Html.LabelFor(model => model.FullText, new {@class = "control-label"})
+                <div class="controls">
+                    @Html.TextAreaFor(model => model.FullText, new Dictionary<string, object>
+                        {
+                            {"class", "input-xlarge span5"},
+                            {"rows", "15"}
+                        })
+                    @Html.ValidationMessageFor(model => model.FullText, null, new {@class = "help-inline"})
+                </div>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary pull-right" data-loading-text="Sending...">Send</button>

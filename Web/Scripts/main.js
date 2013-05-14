@@ -18,13 +18,22 @@ function showResponse(responseText, statusText, xhr, $form) {
         el: $('#elem'),
         data: responseText
     });
-
-    Tempo.prepare("sentences").render(responseText.selectedSentences);
-    Tempo.prepare("keywords").render(responseText.keywords);
     
-    $('#output').toggle();
+    var sentencesTemplate = Tempo.prepare("sentences");
+    var keywordsTemplate = Tempo.prepare("keywords");
+    
+    sentencesTemplate.clear();
+    keywordsTemplate.clear();
 
-    $('html, body').animate({ scrollTop: $('#output').position().top }, 'slow');
+    sentencesTemplate.render(responseText.selectedSentences);
+    keywordsTemplate.render(responseText.keywords);
+    
+    $('#output').show();
+
+    $('html, body').animate(
+        {
+            scrollTop: $('#output').position().top
+        }, 'slow');
 }
 
 
@@ -35,6 +44,7 @@ function showResponse(responseText, statusText, xhr, $form) {
 */
 $(function () {
     
+
     $("#loading").ajaxStart(function () {
         $(this).show();
     });

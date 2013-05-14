@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TextSummarizationLibrary;
+using TextSummarizationLibrary.Models;
 using Web.Models;
 
 namespace Web.Controllers

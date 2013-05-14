@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
 {
-
     internal class Highlighter
     {
         public Highlighter(Article article)
@@ -15,11 +14,11 @@ namespace TextSummarizationLibrary
 
         internal Article SelectNumberOfSentences(int lineCount)
         {
-            var loopCounter = 0;
+            int loopCounter = 0;
             foreach (Sentence sentence in Article.Sentences
-                .OrderByDescending(p => p.Score)
-                .Select(p => p)
-                .Where(sentence => sentence.OriginalSentence != null))
+                                                 .OrderByDescending(p => p.Score)
+                                                 .Select(p => p)
+                                                 .Where(sentence => sentence.OriginalSentence != null))
             {
                 sentence.Selected = true;
                 loopCounter++;
