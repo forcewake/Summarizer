@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace TextSummarizationLibrary
@@ -29,41 +31,44 @@ namespace TextSummarizationLibrary
         public Dictionary<string, string> SynonymRules { get; set; }
         public string Language { get; set; }
 
-        [FileIOPermission(SecurityAction.Demand, Read = "$AppDir$\\dics")]
-        public static Dictionary LoadFromFile(string DictionaryLanguage)
+        public static Dictionary LoadFromFile(string dictionaryLanguage)
         {
-            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            if (directoryName != null)
+            var dict = new Dictionary();
+            XElement doc;
+            switch (dictionaryLanguage)
             {
-                var dictionaryFile = string.Format(@"{1}\dics\{0}.xml", DictionaryLanguage,
-                                                      directoryName.Substring(6));
-                if (!File.Exists(dictionaryFile))
-                {
-                    throw new FileNotFoundException("Could Not Load Dictionary: " + dictionaryFile);
-                }
-                var dict = new Dictionary();
-                XElement doc = XElement.Load(dictionaryFile);
-                dict.Step1PrefixRules = LoadKeyValueRule(doc, "stemmer", "step1_pre");
-                dict.Step1SuffixRules = LoadKeyValueRule(doc, "stemmer", "step1_post");
-                dict.ManualReplacementRules = LoadKeyValueRule(doc, "stemmer", "manual");
-                dict.PrefixRules = LoadKeyValueRule(doc, "stemmer", "pre");
-                dict.SuffixRules = LoadKeyValueRule(doc, "stemmer", "post");
-                dict.SynonymRules = LoadKeyValueRule(doc, "stemmer", "synonyms");
-                dict.LinebreakRules = LoadValueOnlyRule(doc, "parser", "linebreak");
-                dict.NotALinebreakRules = LoadValueOnlyRule(doc, "parser", "linedontbreak");
-                dict.DepreciateValueRule = LoadValueOnlyRule(doc, "grader-syn", "depreciate");
-                dict.TermFreqMultiplierRule = LoadValueOnlySection(doc, "grader-tf");
-
-                List<string> unimpwords;
-                dict.UnimportantWords = new List<Word>();
-                unimpwords = LoadValueOnlySection(doc, "grader-tc");
-                foreach (var unimpword in unimpwords)
-                {
-                    dict.UnimportantWords.Add(new Word(unimpword));
-                }
-                return dict;
+                case "ru":
+                    {
+                        doc = XElement.Parse(Properties.Resources.ru);
+                        break;
+                    }
+                case "en":
+                    {
+                        doc = XElement.Parse(Properties.Resources.en);
+                        break;
+                    }
+                default:
+                    throw new ArgumentException("Dictionary Language is bad " + dictionaryLanguage);
             }
-            return null;
+
+            dict.Step1PrefixRules = LoadKeyValueRule(doc, "stemmer", "step1_pre");
+            dict.Step1SuffixRules = LoadKeyValueRule(doc, "stemmer", "step1_post");
+            dict.ManualReplacementRules = LoadKeyValueRule(doc, "stemmer", "manual");
+            dict.PrefixRules = LoadKeyValueRule(doc, "stemmer", "pre");
+            dict.SuffixRules = LoadKeyValueRule(doc, "stemmer", "post");
+            dict.SynonymRules = LoadKeyValueRule(doc, "stemmer", "synonyms");
+            dict.LinebreakRules = LoadValueOnlyRule(doc, "parser", "linebreak");
+            dict.NotALinebreakRules = LoadValueOnlyRule(doc, "parser", "linedontbreak");
+            dict.DepreciateValueRule = LoadValueOnlyRule(doc, "grader-syn", "depreciate");
+            dict.TermFreqMultiplierRule = LoadValueOnlySection(doc, "grader-tf");
+
+            dict.UnimportantWords = new List<Word>();
+            List<string> unimpwords = LoadValueOnlySection(doc, "grader-tc");
+            foreach (var unimpword in unimpwords)
+            {
+                dict.UnimportantWords.Add(new Word(unimpword));
+            }
+            return dict;
         }
 
         private static List<string> LoadValueOnlySection(XElement doc, string section)

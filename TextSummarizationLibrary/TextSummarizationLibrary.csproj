@@ -44,6 +44,11 @@
     <Compile Include="Grader.cs" />
     <Compile Include="Highlighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sentence.cs" />
     <Compile Include="Stemmer.cs" />
     <Compile Include="SummarizedDocument.cs" />
@@ -52,12 +57,16 @@
     <Compile Include="Word.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dics\en.xml">
+    <EmbeddedResource Include="dics\en.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dics\ru.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="dics\ru.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
