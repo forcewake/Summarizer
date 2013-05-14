@@ -2,6 +2,8 @@ Summarizer
 ==========
 
 Summarizer this is application which can help you with reading big boring articles. 
+
+## Example
 http://summarizer.apphb.com/ - try it!
 
 ## Uses:
