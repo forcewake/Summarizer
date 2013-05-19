@@ -6,24 +6,35 @@
     Layout = "~/Views/Shared/_BootstrapLayout.narrow.cshtml";
 }
 
-@using (Html.BeginForm("", "api/summarizer", FormMethod.Post, new {@class = "well span8", id = "summarizerForm"}))
+@using (Html.BeginForm("", "api/summarizer", FormMethod.Post, new { @class = "well span8", id = "summarizerForm" }))
 {
     <div id="errors"></div>
     @Html.ValidationSummary(true)
 
     <div class="row">
+        <div class="span8">
+            <button type="button" class="close pull-left" data-dismiss="alert">&times;</button>
+            <blockquote class="pull-right">
+                <p>
+                    Automatic text summarization is the technique where a computer program summarizes a document. 
+                   A text is put into the computer and a highlighted (summarized) text is returned. 
+                   The program reads a text and decides which sentences are important and which are not.
+                </p>
+                <small>Someone famous from <cite title="Source Title">Very famous source</cite></small>
+            </blockquote>
+        </div>
         <div class="span3">
             <div class="control-group">
-                @Html.LabelFor(model => model.DisplayLines, new {@class = "control-label"})
+                @Html.LabelFor(model => model.DisplayLines, new { @class = "control-label" })
                 <div class="controls">
                     @Html.EditorFor(model => model.DisplayLines)
-                    @Html.ValidationMessageFor(model => model.DisplayLines, null, new {@class = "help-inline"})
+                    @Html.ValidationMessageFor(model => model.DisplayLines, null, new { @class = "help-inline" })
                 </div>
             </div>
             <div class="control-group">
-                @Html.LabelFor(model => model.LanguageId, new {@class = "control-label"})
+                @Html.LabelFor(model => model.LanguageId, new { @class = "control-label" })
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>) ViewBag.PossibleLanguage).Select(option => new SelectListItem
+                    @Html.DropDownListFor(model => model.LanguageId, ((IEnumerable<Web.Models.Language>)ViewBag.PossibleLanguage).Select(option => new SelectListItem
                         {
                             Text = Html.DisplayTextFor(_ => option.FullName).ToString(),
                             Value = option.LanguageId.ToString(),
@@ -32,7 +43,7 @@
                             {
                                 {"class", "input-xlarge span3"}
                             })
-                    @Html.ValidationMessageFor(model => model.LanguageId, null, new {@class = "help-inline"})
+                    @Html.ValidationMessageFor(model => model.LanguageId, null, new { @class = "help-inline" })
                 </div>
             </div>
             <div class="control-group">
@@ -43,14 +54,15 @@
         </div>
         <div class="span5">
             <div class="control-group">
-                @Html.LabelFor(model => model.FullText, new {@class = "control-label"})
+                @Html.LabelFor(model => model.FullText, new { @class = "control-label" })
                 <div class="controls">
                     @Html.TextAreaFor(model => model.FullText, new Dictionary<string, object>
                         {
                             {"class", "input-xlarge span5"},
-                            {"rows", "15"}
+                            {"rows", "15"},
+                            {"style", "resize: none;"}
                         })
-                    @Html.ValidationMessageFor(model => model.FullText, null, new {@class = "help-inline"})
+                    @Html.ValidationMessageFor(model => model.FullText, null, new { @class = "help-inline" })
                 </div>
             </div>
         </div>
