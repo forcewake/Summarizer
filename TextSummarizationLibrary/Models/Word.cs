@@ -2,7 +2,7 @@ using System;
 
 namespace TextSummarizationLibrary.Models
 {
-    internal class Word
+    public class Word
     {
         public Word()
         {

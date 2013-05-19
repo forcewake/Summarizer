@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using TextSummarizationLibrary.Controllers;
 using TextSummarizationLibrary.Models;
 
 namespace TextSummarizationLibrary
@@ -15,88 +14,30 @@ namespace TextSummarizationLibrary
             Concepts = new List<string>();
         }
 
-        public List<Sentence> Sentences { get; set; }
-        public int LineCount { get; set; }
+        public List<Sentence> Sentences { get; private set; }
         public List<string> Concepts { get; set; }
-        public Dictionary Rules { get; set; }
+        public Dictionary Rules { get; private set; }
 
         public List<Word> ImportantWords { get; set; }
-        public List<Word> WordCounts { get; set; }
+        public List<Word> WordCounts { get; private set; }
 
-
-        public void ParseText(TextModel textModel)
+        public GraderController Grade()
         {
-            string[] words = textModel.Text.Split(' ', '\r'); //space and line feed characters are the ends of words.
-            var cursentence = new Sentence();
-            Sentences.Add(cursentence);
-            var originalSentence = new StringBuilder();
-            foreach (string word in words)
-            {
-                string locWord = word;
-                if (locWord.StartsWith("\n") && word.Length > 2)
-                {
-                    locWord = locWord.Replace("\n", "");
-                }
-                originalSentence.AppendFormat("{0} ", locWord);
-                cursentence.Words.Add(new Word(locWord));
-                AddWordCount(locWord);
-                if (!IsSentenceBreak(locWord))
-                {
-                    continue;
-                }
-                cursentence.OriginalSentence = originalSentence.ToString();
-                cursentence = new Sentence();
-                originalSentence = new StringBuilder();
-                Sentences.Add(cursentence);
-            }
+            return new GraderController(this);
         }
 
-        private void AddWordCount(string word)
+        public HighlighterController Highlight()
         {
-            Word stemmedWord = Stemmer.StemWord(word, Rules);
-            if (string.IsNullOrEmpty(word) || word == " " || word == "\n" || word == "\t") return;
-            Word foundWord = WordCounts.Find(match => match.Stem == stemmedWord.Stem);
-            if (foundWord == null)
-            {
-                WordCounts.Add(stemmedWord);
-            }
-            else
-            {
-                foundWord.TermFrequency++;
-            }
-        }
-
-        private bool IsSentenceBreak(string word)
-        {
-            if (word.Contains("\r") || word.Contains("\n")) return true;
-            bool shouldBreak =
-                (Rules.LinebreakRules.Any(p => word.EndsWith(p, StringComparison.CurrentCultureIgnoreCase)));
-
-
-            if (shouldBreak == false)
-            {
-                return false;
-            }
-
-            shouldBreak =
-                (!Rules.NotALinebreakRules.Any(p => word.StartsWith(p, StringComparison.CurrentCultureIgnoreCase)));
-            return shouldBreak;
-        }
-
-        public Grader Grade()
-        {
-            return new Grader(this);
-        }
-
-        public Highlighter Highlight()
-        {
-            return new Highlighter(this);
+            return new HighlighterController(this);
         }
 
         public Article Parse(TextModel text)
         {
             Rules = Dictionary.LoadFromFile(text.Language);
-            ParseText(text);
+            var textController = new TextController(Rules);
+            TextSource source = textController.ParseText(text);
+            Sentences = source.Sentences;
+            WordCounts = source.WordCounts;
             return this;
         }
 

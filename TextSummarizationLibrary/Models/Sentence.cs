@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TextSummarizationLibrary.Models
 {
-    internal class Sentence
+    public class Sentence
     {
         public Sentence()
         {

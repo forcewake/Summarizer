@@ -60,7 +60,7 @@ namespace Web.Controllers
                 textRepository.InsertOrUpdate(text);
                 textRepository.Save();
                 text.Language = languageRepository.Find(text.LanguageId);
-                text.ShortText = string.Join("\n", new Summarizer()
+                text.ShortText = string.Join("\n", new TextSummarizationLibrary.Controllers.SummarizerController()
                                                        .Summarize(new TextModel
                                                        {
                                                            DisplayLines = text.DisplayLines,

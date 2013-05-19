@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using TextSummarizationLibrary.Models;
 
-namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Controllers
 {
-    internal class Grader
+    internal class GraderController
     {
-        public Grader(Article article, int wordsCount = 5)
+        public GraderController(Article article, int wordsCount = 3)
         {
             WordsCount = wordsCount;
             Article = article;
         }
 
         private Article Article { get; set; }
-        public int WordsCount { get; private set; }
+        private int WordsCount { get; set; }
 
-        internal Grader CreateImportantWordsList()
+        internal GraderController CreateImportantWordsList()
         {
             var wordsArray = new Word[Article.WordCounts.Count()];
             Article.WordCounts.CopyTo(wordsArray);
@@ -30,20 +30,23 @@ namespace TextSummarizationLibrary
             {
                 Article.ImportantWords.Remove(foundWord);
             }
+
             Article.ImportantWords.Sort(CompareWordsByFrequency);
             return this;
         }
 
-        internal Grader GradeSentences()
+        internal GraderController GradeSentences()
         {
-            foreach (Sentence sentence in from sentence in Article.Sentences
-                                          from importantWord in
-                                              sentence.Words.Select(word => Stemmer.StemStrip(word.Value, Article.Rules))
-                                                      .Select(
-                                                          wordstem =>
-                                                          Article.ImportantWords.Find(match => match.Stem == wordstem))
-                                                      .Where(importantWord => importantWord != null)
-                                          select sentence)
+            var stemmerController = new StemmerController(Article.Rules);
+            foreach (Sentence sentence in
+                Article.Sentences.SelectMany(sentence => sentence.Words
+                                                                 .Select(word => stemmerController.StemStrip(word.Value))
+                                                                 .Select(
+                                                                     wordstem =>
+                                                                     Article.ImportantWords.Find(
+                                                                         match => match.Stem == wordstem))
+                                                                 .Where(importantWord => importantWord != null),
+                                             (sentence, importantWord) => sentence))
             {
                 sentence.Score++;
             }
@@ -51,7 +54,7 @@ namespace TextSummarizationLibrary
             return this;
         }
 
-        internal Grader ExtractArticleConcepts()
+        internal GraderController ExtractArticleConcepts()
         {
             Article.Concepts = new List<string>();
             if (Article.ImportantWords.Count > WordsCount)

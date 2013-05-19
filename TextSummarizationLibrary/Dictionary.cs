@@ -7,7 +7,7 @@ using TextSummarizationLibrary.Properties;
 
 namespace TextSummarizationLibrary
 {
-    internal class Dictionary
+    public class Dictionary
     {
         private Dictionary()
         {

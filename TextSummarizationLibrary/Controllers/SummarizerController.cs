@@ -1,8 +1,8 @@
-﻿using TextSummarizationLibrary.Models;
+using TextSummarizationLibrary.Models;
 
-namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Controllers
 {
-    public class Summarizer
+    public class SummarizerController
     {
         public SummarizedDocument Summarize(TextModel text)
         {

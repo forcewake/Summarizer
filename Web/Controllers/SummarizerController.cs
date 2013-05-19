@@ -15,17 +15,17 @@ namespace Web.Controllers
     public class SummarizerController : ApiController
     {
         private readonly ILanguageRepository _languageRepository;
-        private readonly Summarizer _summarizer;
+        private readonly TextSummarizationLibrary.Controllers.SummarizerController _summarizerController;
 
         public SummarizerController()
-            : this(new LanguageRepository(), new Summarizer())
+            : this(new LanguageRepository(), new TextSummarizationLibrary.Controllers.SummarizerController())
         {
         }
 
-        public SummarizerController(ILanguageRepository languageRepository, Summarizer summarizer)
+        public SummarizerController(ILanguageRepository languageRepository, TextSummarizationLibrary.Controllers.SummarizerController summarizerController)
         {
             this._languageRepository = languageRepository;
-            _summarizer = summarizer;
+            _summarizerController = summarizerController;
         }
 
         // POST api/Summarizer
@@ -49,7 +49,7 @@ namespace Web.Controllers
                         Text = text.FullText
                     };
                 
-                    SummarizedDocument summarizedDocument = _summarizer.Summarize(textModel);
+                    SummarizedDocument summarizedDocument = _summarizerController.Summarize(textModel);
 
 
                 if (summarizedDocument != null)

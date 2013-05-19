@@ -1,11 +1,11 @@
-﻿using System.Linq;
+using System.Linq;
 using TextSummarizationLibrary.Models;
 
-namespace TextSummarizationLibrary
+namespace TextSummarizationLibrary.Controllers
 {
-    internal class Highlighter
+    internal class HighlighterController
     {
-        public Highlighter(Article article)
+        public HighlighterController(Article article)
         {
             Article = article;
         }
